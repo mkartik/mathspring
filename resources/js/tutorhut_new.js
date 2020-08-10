@@ -57,6 +57,11 @@ const LCDIALOG_WIDTH = 300;
 const LCDIALOG_HEIGHT = 700;
 var DELAY = 700, clicks = 0, timer = null; //Variables required for determining the difference between single and double clicks
 
+var MY_PROGRESS = "ExitToMyProgress";
+var MY_GARDEN = "ExitToGarden";
+var LOGOUT = "LogOut";
+var NEXT_PROBLEM = "SkipByNextProblem";
+
 function isFlashProblem() {
     return globals.probType === FLASH_PROB_TYPE;
 }
@@ -321,7 +326,9 @@ function instructions () {
 // click handlers)
 function myprogress() {
     debugAlert("in myprogress");
-    globals.lastProbType = globals.probType;
+	globals.clickEvent = MY_PROGRESS;
+	globals.lastProbType = globals.probType;
+    sendEndEvent(globals);   
     globals.lastProbId = globals.probId;
     document.location.href = "/"+sysGlobals.wayangServletContext + "/TutorBrain?action=navigation&sessionId=" + globals.sessionId + "&elapsedTime=" + globals.elapsedTime + "&probElapsedTime=" + globals.probElapsedTime + "&from=sat_hut&to=my_progress&topicId="+ globals.topicId +"&probId="+globals.probId + "&eventCounter="+ sysGlobals.eventCounter++ + "&var=b";
 }
@@ -402,6 +409,7 @@ function showUserPreferences (globals) {
 }
 
 function showDashboard () {
+	globals.clickEvent = MY_GARDEN;
     sendEndEvent(globals);
     globals.lastProbType = globals.probType;
     globals.lastProbId = globals.probId;
@@ -702,6 +710,7 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
     $(FLASH_CONTAINER_OUTERID).html('<div id="' +FLASH_CONTAINER_INNER+ '"></div>');
     $(PROBLEM_WINDOWID).attr("src","");
     // Replaceing the example div for the same reason as the above.
+
     $(EXAMPLE_CONTAINER_DIV_ID).html('<iframe id="'+EXAMPLE_FRAME+'" name="iframe2" width="660" height="660" src="" frameborder="no" scrolling="no"></iframe>');
     var activity = JSON.parse(responseText);
     console.log(responseText);
@@ -709,6 +718,8 @@ function processNextProblemResult(responseText, textStatus, XMLHttpRequest) {
     var activityType = activity.activityType;
     var type = activity.type;
 
+	globals.clickEvent = NEXT_PROBLEM;
+	
     if (activityType == NO_MORE_PROBLEMS || activityType == NO_MORE_CHALLENGE_PROBLEMS || activityType == NO_MORE_REVIEW_PROBLEMS)  {
         // send EndEvent for previous problem
         sendEndEvent(globals);
@@ -1329,7 +1340,11 @@ function clickHandling () {
     $("#myProg").click(function () {
         myprogress(globals)
     });
-}
+
+	$("#logout_").click(function() {
+		globals.clickEvent = LOGOUT;
+		sendEndEvent(globals);
+	});}
 
 
 

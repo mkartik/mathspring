@@ -44,6 +44,7 @@ public class StudentProblemData {
     private boolean usedTextReader=false;
     private double probDifficulty=-1;
     private boolean problemBroken=false;
+    private String problemAbortedBy;
 
     public StudentProblemData () {}
 
@@ -335,4 +336,12 @@ public class StudentProblemData {
     public void setProblemBroken(boolean problemBroken) {
         this.problemBroken = problemBroken;
     }
+
+	public String getProblemAbortedBy() {
+		return problemAbortedBy;
+	}
+
+	public void setProblemAbortedBy(String problemAbortedBy) {
+		this.problemAbortedBy = problemAbortedBy;
+	}
 }

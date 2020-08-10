@@ -192,8 +192,8 @@ public class AffectStudentModel extends BaseStudentModel {
      * @param smgr
      * @throws SQLException
      */
-    public void endProblem(SessionManager smgr, int studId, long probElapsedTime, long elapsedTime) throws Exception {
-        super.endProblem(smgr, studId, probElapsedTime, elapsedTime);
+    public void endProblem(SessionManager smgr, int studId, long probElapsedTime, long elapsedTime, String clickEvent) throws Exception {
+        super.endProblem(smgr, studId, probElapsedTime, elapsedTime, clickEvent);
 //        setIRTvariables(smgr.getStudentState());
         problemHistory.updateEmotions(smgr,this.lastEmotion,this.lastEmotionValue);
        // smgr.getStudentState().endProblem(smgr, 0, 0, 0); // set/initialize student state variables based on newProblem event

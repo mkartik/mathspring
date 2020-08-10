@@ -196,7 +196,7 @@ public class DbStudentProblemHistory {
                                  long problemEndTime, int numMistakes, int numHints,
                                  boolean solutionHintGiven, double mastery,
                                  String effort, boolean seenVideo, int examplesSeen, boolean textReaderUsed,
-                                 long timeToSecondHint, long timeToThirdHint, long timeToSecondAttempt, long timeToThirdAttempt, boolean isProbBroken) throws SQLException {
+                                 long timeToSecondHint, long timeToThirdHint, long timeToSecondAttempt, long timeToThirdAttempt, boolean isProbBroken, String problemAbortedBy) throws SQLException {
 
         PreparedStatement ps=null;
         try {
@@ -221,7 +221,8 @@ public class DbStudentProblemHistory {
                     "timeToThirdAttempt=?, " +
                     "timeToSecondHint=?, " +
                     "timeToThirdHint=?, " +
-                    "isProbBroken=? " +
+                    "isProbBroken=?, " +
+                    "problemAbortedBy=? " +
                     "where id=?";
             ps = conn.prepareStatement(q);
             ps.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
@@ -246,9 +247,9 @@ public class DbStudentProblemHistory {
             ps.setLong(19, timeToSecondHint);
             ps.setLong(20, timeToThirdHint);
             ps.setBoolean(21, isProbBroken);
+            ps.setString(22, problemAbortedBy);
 
-
-            ps.setInt(22, historyRecId);
+            ps.setInt(23, historyRecId);
 
             return ps.executeUpdate();
         } finally {

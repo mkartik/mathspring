@@ -156,12 +156,13 @@ function getXMLElement(xml, elementName) {
 // don't send an endExternalActivity if the last prob was 4mality.  4mality sends its own begin/ends
 function sendEndEvent(globals) {
     updateTimers();
+	console.log(globals.clickEvent);
     if (globals.lastProbType == '')
         return;
     else if (globals.lastProbType == HTML_PROB_TYPE || globals.lastProbType == FLASH_PROB_TYPE )
     {
         isExample = isDemoOrExampleMode()
-        servletGetWait("EndProblem",{probId: globals.lastProbId, probElapsedTime: globals.probElapsedTime,  clickTime: globals.clickTime, isExample: isExample},processEndProblem);
+        servletGetWait("EndProblem",{probId: globals.lastProbId, probElapsedTime: globals.probElapsedTime,  clickTime: globals.clickTime, isExample: isExample, clickEvent: globals.clickEvent},processEndProblem);
     }
     else if (globals.lastProbType === TOPIC_INTRO_PROB_TYPE)
         ; // Topic Intros are no longer problems and thus we don't need to end them
