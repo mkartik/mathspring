@@ -8,9 +8,11 @@ import edu.umass.ckc.wo.db.DbTopics;
 import edu.umass.ckc.wo.event.NavigationEvent;
 import edu.umass.ckc.wo.event.SaveCommentEvent;
 import edu.umass.ckc.wo.event.SessionEvent;
+import edu.umass.ckc.wo.event.tutorhut.InputResponseNextProblemInterventionEvent;
 import edu.umass.ckc.wo.event.tutorhut.ShowProgressEvent;
 import edu.umass.ckc.wo.event.tutorhut.SplashPageEvent;
 import edu.umass.ckc.wo.event.tutorhut.TopicDetailEvent;
+import edu.umass.ckc.wo.event.tutorhut.TutorHutEvent;
 import edu.umass.ckc.wo.myprogress.TopicSummary;
 import edu.umass.ckc.wo.myprogress.TopicDetails;
 import edu.umass.ckc.wo.myprogress.problemDetails;
@@ -133,6 +135,10 @@ public class MyProgressHandler {
         else if (e instanceof SaveCommentEvent) {
             DbStudentComment.saveComment(conn, smgr.getSessionNum(), smgr.getStudentId(),
                     ((SaveCommentEvent) e).getTopicId(), ((SaveCommentEvent) e).getStudentAction(),((SaveCommentEvent) e).getComment());
+        }
+        else if (e instanceof TutorHutEvent) {
+        	showProgressPage(e);
+            return null;
         }
 
 

@@ -2,6 +2,7 @@ package edu.umass.ckc.wo.woserver;
 
 
 import edu.umass.ckc.servlet.servbase.ServletEvent;
+import edu.umass.ckc.servlet.servbase.ServletParams;
 import edu.umass.ckc.servlet.servbase.UserException;
 import edu.umass.ckc.servlet.servbase.View;
 import edu.umass.ckc.wo.assistments.AssistmentsHandler;
@@ -16,6 +17,7 @@ import edu.umass.ckc.wo.event.tutorhut.*;
 import edu.umass.ckc.wo.exc.NoSessionException;
 import edu.umass.ckc.wo.handler.*;
 import edu.umass.ckc.wo.html.tutor.TutorPage;
+import edu.umass.ckc.wo.interventions.TopicSwitchAskIntervention;
 import edu.umass.ckc.wo.log.CompleteEventDataLogger;
 import edu.umass.ckc.wo.log.TutorLogger;
 import edu.umass.ckc.wo.login.LandingPage;
@@ -300,7 +302,10 @@ public class TutorBrainHandler {
             else if (e instanceof TutorHutEvent) {
                 ((TutorHutEvent) e).setServletResponse(servletInfo.getResponse());  // This is because processing might result in forward to a JSP
                 ((TutorHutEvent) e).setServletRequest(servletInfo.getRequest());  // This is because processing might result in forward to a JSP
+                ((TutorHutEvent) e).setServletContext(servletInfo.getServletContext());  // This is because processing might result in forward to a JSP
+                
                 View v = new TutorHutEventHandler(smgr).handleRequest((TutorHutEvent) e);
+                
                 // if we get a null View, this means we forwarded to a JSP so we return false so the server doesn't flush output
                 if (v == null)
                     return false;

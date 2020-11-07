@@ -3,6 +3,7 @@ package edu.umass.ckc.wo.event.tutorhut;
 import edu.umass.ckc.wo.event.SessionEvent;
 import edu.umass.ckc.servlet.servbase.ServletParams;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,7 +22,7 @@ public abstract class TutorHutEvent extends SessionEvent {
 
     protected HttpServletResponse servletResponse;  // THis is so the Tutor can forward to JSPs
     protected HttpServletRequest servletRequest;  // THis is so the Tutor can forward to JSPs
-
+    protected ServletContext servletContext; // THis is so the Tutor can forward to JSPs
 
     TutorHutEvent() {}
 
@@ -72,4 +73,14 @@ public abstract class TutorHutEvent extends SessionEvent {
     public long getClickTime() {
         return clickTime;
     }
+
+	public ServletContext getServletContext() {
+		return servletContext;
+	}
+
+	public void setServletContext(ServletContext servletContext) {
+		this.servletContext = servletContext;
+	}
+    
+    
 }
