@@ -2,12 +2,17 @@ package edu.umass.ckc.wo.tutor.intervSel2;
 
 import edu.umass.ckc.servlet.servbase.ServletParams;
 import edu.umass.ckc.servlet.servbase.UserException;
+import edu.umass.ckc.servlet.servbase.View;
+import edu.umass.ckc.wo.event.NavigationEvent;
 import edu.umass.ckc.wo.event.tutorhut.*;
+import edu.umass.ckc.wo.handler.MyProgressHandler;
+import edu.umass.ckc.wo.handler.NavigationHandler;
 import edu.umass.ckc.wo.interventions.InterleavedTopicSwitchIntervention;
 import edu.umass.ckc.wo.interventions.NextProblemIntervention;
 import edu.umass.ckc.wo.interventions.TopicSwitchAskIntervention;
 import edu.umass.ckc.wo.interventions.TopicSwitchIntervention;
 import edu.umass.ckc.wo.smgr.SessionManager;
+import edu.umass.ckc.wo.state.TopicState;
 import edu.umass.ckc.wo.tutor.Settings;
 import edu.umass.ckc.wo.tutor.model.TopicModel;
 import edu.umass.ckc.wo.tutor.pedModel.EndOfTopicInfo;
@@ -21,6 +26,8 @@ import org.jdom.Element;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.ServletContext;
 
 /**
  * Created with IntelliJ IDEA.
@@ -119,8 +126,9 @@ public class TopicSwitchAskIS extends NextProblemInterventionSelector {
                 intervention = getInterleavedTopicIntervention();
 
             }
-            else if (this.ask && !reasons.isContentFailure())
+            else if (!reasons.isContentFailure()) {
                 intervention = new TopicSwitchAskIntervention(expl,smgr.getSessionNum(),smgr.getLocale());
+            }
                 // just inform that we are moving to next topic
             else intervention = new TopicSwitchIntervention(expl,seen,solved,smgr.getLocale());
         }
@@ -168,8 +176,14 @@ public class TopicSwitchAskIS extends NextProblemInterventionSelector {
             smgr.getStudentState().setTopicNumProbsSeen(1);  // set to one so that it won't play an example
             logger.debug("Topic Switch: Student elects to STAY in topic.  Turning off topicSwitch flag");
             smgr.getStudentState().setTopicSwitch(false);
+            smgr.getStudentState().setTopicInternalState(TopicState.IN_TOPIC);
             setUserInput(this,"<topicSwitch wantSwitch=\"" + wantSwitch + "\"/>",e);
             return null;  // no interventions - TODO we were in EndOfTopic and need to do something to return
+        } else if (wantSwitch != null & wantSwitch.equals(TopicSwitchAskIntervention.MYPROGRESS)) {
+        	//move control to MyProgress Page
+        	ShowProgressEvent spe = new ShowProgressEvent(e.getServletParams());
+            new MyProgressHandler(null,smgr,smgr.getConnection(),e.getServletRequest(), e.getServletResponse()).handleRequest(spe);
+        	return null;
         }
         else  {
 //            logger.debug("Topic Switch: Student elects to SWITCH to new topic.");

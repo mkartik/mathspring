@@ -22,6 +22,7 @@ public class TopicSwitchAskIntervention extends InputResponseIntervention implem
     public static final String WANT_TO_SWITCH = "wantSwitch";
     public static final String SWITCH = "switch";
     public static final String STAY = "stay";
+    public static final String MYPROGRESS = "myProgress";
     private int sessionId;
     protected String reasons;
     private Locale locale;
@@ -60,6 +61,7 @@ public class TopicSwitchAskIntervention extends InputResponseIntervention implem
                 str += "<br><br>";
                 str+= "<input type=\"radio\" name=\""+WANT_TO_SWITCH+"\" value=\"" +SWITCH+ "\">" + rb.getString("go_forward_to_next_target") + "<br>";
                 str+= "<input type=\"radio\" name=\""+WANT_TO_SWITCH+"\" value=\"" +STAY+ "\">" + rb.getString("stay_in_current_topic") + "<br>";
+                str+= "<input type=\"radio\" name=\""+WANT_TO_SWITCH+"\" value=\"" +MYPROGRESS+ "\">" + rb.getString("go_to_myprogress") + "<br>";
                 str+="</p></form></div>";
         
         }

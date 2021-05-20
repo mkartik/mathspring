@@ -16,6 +16,7 @@ import edu.umass.ckc.wo.event.tutorhut.*;
 import edu.umass.ckc.wo.exc.NoSessionException;
 import edu.umass.ckc.wo.handler.*;
 import edu.umass.ckc.wo.html.tutor.TutorPage;
+import edu.umass.ckc.wo.interventions.TopicSwitchAskIntervention;
 import edu.umass.ckc.wo.log.CompleteEventDataLogger;
 import edu.umass.ckc.wo.log.TutorLogger;
 import edu.umass.ckc.wo.login.LandingPage;
@@ -313,11 +314,21 @@ public class TutorBrainHandler {
             else if (e instanceof TutorHutEvent) {
                 ((TutorHutEvent) e).setServletResponse(servletInfo.getResponse());  // This is because processing might result in forward to a JSP
                 ((TutorHutEvent) e).setServletRequest(servletInfo.getRequest());  // This is because processing might result in forward to a JSP
+
+                String wantSwitch = servletInfo.getParams().getString(TopicSwitchAskIntervention.WANT_TO_SWITCH,TopicSwitchAskIntervention.SWITCH);
+                if (wantSwitch.equals(TopicSwitchAskIntervention.MYPROGRESS)) {
+                	ShowProgressEvent spe = new ShowProgressEvent(e.getServletParams());
+                    new MyProgressHandler(servletInfo.getServletContext(),smgr,smgr.getConnection(),servletInfo.getRequest(),servletInfo.getResponse()).handleRequest(spe);
+                    return false;
+                }
+                else {
+
                 View v = new TutorHutEventHandler(smgr).handleRequest((TutorHutEvent) e);
                 // if we get a null View, this means we forwarded to a JSP so we return false so the server doesn't flush output
                 if (v == null)
                     return false;
                 servletInfo.getOutput().append(v.getView());
+                }
             }
 
             // these are parts of the system (e.g. pretests that still rely on StudentActionEvents or EndActivityEvents)

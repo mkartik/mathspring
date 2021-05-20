@@ -166,7 +166,7 @@ public class TopicSelectorImpl implements TopicSelector {
             maxProbsReached=true;
 
         //if maxTime then we're done
-        else if (smgr.getStudentState().getTimeInTopic() + probElapsedTime >= tmParameters.getMaxTimeMs())
+        else if (smgr.getStudentState().getTimeInTopic() >= tmParameters.getMaxTimeMs())
             maxTimeReached=true;
 
         else if (smgr.getStudentModel().getTopicMastery(smgr.getStudentState().getCurTopic()) >= tmParameters.getDesiredMastery()) {
